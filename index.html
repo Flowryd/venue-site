@@ -11,14 +11,14 @@
 <meta property="og:site_name" content="Flowryd">
 <meta property="og:title" content="A market is a simple equation">
 <meta property="og:description" content="Tokenisation will not change what makes a market — only where it is made, and whether decentralised finance can deliver on its promise. That is being decided now.">
-<meta property="og:image" content="assets/og-cover.png">
+<meta property="og:image" content="og-cover.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="627">
 <meta property="og:url" content="https://flowryd.xyz/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="A market is a simple equation">
 <meta name="twitter:description" content="The venue is the market. Win the venue, and the asset comes to you.">
-<meta name="twitter:image" content="assets/og-cover.png">
+<meta name="twitter:image" content="og-cover.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -88,12 +88,12 @@ blockquote{margin:22px 0;padding:2px 0 2px 20px;border-left:2px solid var(--stro
 .assets{max-width:1100px;margin:60px auto 0;padding:0 26px}
 .assets h3{font-family:var(--mono);font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:20px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
-.card{border:1px solid var(--stroke2);border-radius:14px;overflow:hidden;background:linear-gradient(180deg,var(--panel),var(--panel2));text-decoration:none;color:inherit;display:block;transition:border-color .2s}
-.card:hover{border-color:var(--mint)}
-.card img{width:100%;display:block;border-bottom:1px solid var(--stroke)}
-.card .cc{padding:14px 16px}
-.card .ct{font-size:15px;font-weight:600;color:var(--ink)}
-.card .cs{font-family:var(--mono);font-size:12px;color:var(--faint);margin-top:4px}
+.card{border:1px solid var(--stroke2);border-radius:14px;background:linear-gradient(180deg,var(--panel),var(--panel2));text-decoration:none;color:inherit;display:block;transition:border-color .2s,transform .2s;min-height:180px}
+.card:hover{border-color:var(--mint);transform:translateY(-2px)}
+.card .cc{padding:22px 22px;display:flex;flex-direction:column;height:100%}
+.card .ck{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mint);margin-bottom:auto}
+.card .ct{font-size:19px;font-weight:700;color:var(--ink);letter-spacing:-.01em;margin-top:26px;line-height:1.2}
+.card .cs{font-family:var(--mono);font-size:12.5px;color:var(--faint);margin-top:10px}
 
 /* footer */
 footer{max-width:1100px;margin:70px auto 0;padding:26px;border-top:1px solid var(--stroke);
@@ -215,8 +215,8 @@ footer a:hover{color:var(--mint)}
   <div class="fh">See how onchain markets are forming — repo and FX, one always-on flow</div>
   <div class="fd">Round-the-clock trading needs round-the-clock funding — new collateral, new ways to pay, and the FX to cover the risk. Move one onchain and you move the other.</div>
   <div class="frame">
-    <iframe src="assets/flows/" title="How wholesale markets flow — tokenised repo" loading="lazy"></iframe>
-    <a class="open" href="assets/flows/" target="_blank" rel="noopener">Open full &nbsp;&rarr;</a>
+    <iframe src="repo-fx" title="How wholesale markets flow — tokenised repo" loading="lazy"></iframe>
+    <a class="open" href="repo-fx" target="_blank" rel="noopener">Open full &nbsp;&rarr;</a>
   </div>
 </div>
 
@@ -237,15 +237,14 @@ footer a:hover{color:var(--mint)}
 <section class="assets">
   <h3>Take it, adapt it, build on it</h3>
   <div class="grid">
-    <a class="card" href="assets/flows/" target="_blank" rel="noopener">
-      <div class="cc"><div class="ct">How markets flow — tokenised repo</div><div class="cs">interactive · repo &amp; FX &rarr;</div></div>
+    <a class="card" href="repo-fx" target="_blank" rel="noopener">
+      <div class="cc"><div class="ck">Interactive</div><div class="ct">How markets flow — tokenised repo</div><div class="cs">Watch a repo &amp; FX flow, step by step &rarr;</div></div>
     </a>
-    <a class="card" href="assets/carousel.pdf" target="_blank" rel="noopener">
-      <div class="cc"><div class="ct">The simple equation — carousel</div><div class="cs">PDF · 8 slides</div></div>
+    <a class="card" href="carousel.pdf" target="_blank" rel="noopener">
+      <div class="cc"><div class="ck">Carousel · PDF</div><div class="ct">The simple equation</div><div class="cs">Eight slides — the argument in full &rarr;</div></div>
     </a>
-    <a class="card" href="assets/lineage-banner.png" target="_blank" rel="noopener">
-      <img src="assets/lineage-banner.png" alt="800 years, one lesson: win the venue, and the asset comes to you">
-      <div class="cc"><div class="ct">Win the venue, and the asset comes to you</div><div class="cs">image · 1200×627</div></div>
+    <a class="card" href="lineage-banner.png" target="_blank" rel="noopener">
+      <div class="cc"><div class="ck">Image · 1200×627</div><div class="ct">Win the venue, and the asset comes to you</div><div class="cs">800 years, one lesson &rarr;</div></div>
     </a>
   </div>
 </section>
