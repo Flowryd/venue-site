@@ -3,312 +3,262 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Flowryd — Tokenised repo · how app stacks form a flow</title>
+<title>A market is a simple equation — Flowryd</title>
+<meta name="description" content="Tokenisation will not change what makes a market. It will only change where the market is made — and whether decentralised finance can deliver on its promise. That is being decided now.">
+
+<!-- Open Graph / LinkedIn / Twitter share card -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Flowryd">
+<meta property="og:title" content="A market is a simple equation">
+<meta property="og:description" content="Tokenisation will not change what makes a market — only where it is made, and whether decentralised finance can deliver on its promise. That is being decided now.">
+<meta property="og:image" content="assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+<meta property="og:url" content="https://flowryd.xyz/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="A market is a simple equation">
+<meta name="twitter:description" content="The venue is the market. Win the venue, and the asset comes to you.">
+<meta name="twitter:image" content="assets/og-cover.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#0b0d0f; --panel:#14171a; --panel2:#171b1f; --stroke:#232a30; --stroke2:#313a41;
-  --ink:#eef2f4; --muted:rgba(238,242,244,.60); --faint:rgba(238,242,244,.34);
-  --mint:#34DFA1; --exec:#a855f7; --fin:#E08A3C; --cash:#7C89E8; --worth:#D8B44A; --watch:#8FA6B4; --amber:#E0A63C; --red:#f0736b;
-  --mono:'SF Mono',ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace;
-  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Roboto,Helvetica,Arial,sans-serif;
+  --ink:#eef2f4; --muted:rgba(238,242,244,.66); --faint:rgba(238,242,244,.40);
+  --mint:#34DFA1; --cash:#7C89E8;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:var(--bg);color:var(--ink);font-family:var(--sans);overflow:hidden}
-.fit{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
-.stage{width:1440px;height:810px;position:relative;transform-origin:center center;
-  background:radial-gradient(1200px 700px at 50% 6%,rgba(52,223,161,.05),transparent 60%),var(--bg);
-  padding:32px 50px 26px;display:flex;flex-direction:column}
+html{scroll-behavior:smooth}
+body{background:radial-gradient(1400px 900px at 50% -4%,rgba(52,223,161,.05),transparent 55%),var(--bg);
+  color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 26px}
 
-.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
-.eyebrow b{color:var(--ink);font-weight:600}
-.scr{margin-left:14px;padding-left:14px;border-left:1px solid var(--stroke2);color:var(--worth);transition:color .3s}
-.wm{display:flex;align-items:center}
-.lockup{height:20px;width:auto;display:block;color:var(--ink);opacity:.9}
-.ticks{position:absolute;top:36px;left:50%;transform:translateX(-50%);display:flex;gap:5px}
-.tick{width:20px;height:2px;border-radius:2px;background:var(--stroke2);transition:background .3s}
-.tick.on{background:var(--mint)}
-.laylabel{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px}
+/* top bar */
+.nav{max-width:1100px;margin:0 auto;padding:26px 26px 0;display:flex;align-items:center;justify-content:space-between}
+.nav .lock{height:22px;color:#fff;display:block}
+.nav .cta{font-family:var(--mono);font-size:13px;letter-spacing:.04em;color:var(--mint);text-decoration:none;
+  border:1px solid var(--mint);border-radius:9px;padding:9px 15px;background:rgba(52,223,161,.06)}
 
-/* ===== band ===== */
-.band{display:flex;align-items:stretch;gap:12px}
-.col{flex:1 1 0;display:flex;flex-direction:column;min-width:0}
-.col.pre{flex:0 0 196px;margin-right:18px;position:relative}
-.col.pre::after{content:"";position:absolute;top:12px;bottom:12px;right:-18px;width:1px;
-  background:repeating-linear-gradient(to bottom,var(--stroke2) 0 6px,transparent 6px 12px)}
-.chead{margin-bottom:9px}
-.cnum{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--faint)}
-.col.pre .cnum{color:var(--watch)}
-.cname{font-size:13px;font-weight:600;color:var(--muted);margin-top:4px;line-height:1.2;min-height:31px}
-.cell{flex:1;border:1px solid var(--stroke);border-radius:12px;background:linear-gradient(180deg,var(--panel),var(--panel2));
-  padding:9px;display:flex;flex-direction:column;gap:8px;position:relative;min-height:150px}
-.col.pre .cell{border-style:dashed;border-color:var(--stroke2);background:transparent}
-.predeal-tag{position:absolute;top:-8px;left:11px;font-family:var(--mono);font-size:9px;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--watch);background:var(--bg);padding:0 6px}
-.loopbadge{position:absolute;top:-8px;right:9px;display:flex;align-items:center;gap:4px;background:var(--bg);
-  padding:0 6px;font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--worth)}
-.loopbadge svg{width:10px;height:10px;stroke:var(--worth);fill:none;stroke-width:1.8}
-.chip{--acc:var(--watch);border:1px solid var(--stroke2);border-left:3px solid var(--acc);border-radius:10px;
-  background:rgba(255,255,255,.022);padding:8px 10px;display:flex;flex-direction:column;gap:6px;
-  opacity:0;transform:translateY(9px);transition:opacity .5s ease-out,transform .5s ease-out}
-.chip.show{opacity:1;transform:none}
-.chip .icons{display:flex;gap:4px}
-.ftile{width:15px;height:15px;border-radius:4px;border:1px solid var(--c);background:color-mix(in srgb,var(--c) 20%,transparent);flex:none}
-.chip .ctitle{font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.15}
-.chip .alabel{font-family:var(--mono);font-size:8.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--faint)}
-.chip .dotrow{display:flex;align-items:center;gap:5px}
-.chip .adot{width:6px;height:6px;border-radius:50%;background:var(--acc)}
-.emk{border:1px dashed var(--stroke2);border-radius:10px;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;opacity:0;transition:opacity .5s}
-.emk.show{opacity:.9}
-.emk .dash{font-family:var(--mono);color:var(--faint);font-size:14px}
-.emk .etxt{font-family:var(--mono);font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);text-align:center;line-height:1.3}
-.emk.pay{border-color:rgba(124,137,232,.45)}
-.emk.pay .etxt{color:var(--cash)}
+/* hero */
+.hero{padding:78px 0 26px}
+.eyebrow{font-family:var(--mono);font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:26px}
+.eyebrow b{color:var(--mint);font-weight:600}
+h1{font-size:clamp(44px,7vw,78px);line-height:1.0;font-weight:800;letter-spacing:-.025em}
+.sub{font-size:clamp(19px,2.4vw,24px);color:var(--muted);font-weight:400;margin-top:26px;line-height:1.45}
+.byline{font-family:var(--mono);font-size:13px;letter-spacing:.05em;color:var(--faint);margin-top:30px;
+  padding-top:22px;border-top:1px solid var(--stroke)}
 
-/* ===== payment swimlane ===== */
-.swim{margin-top:16px;border:1px solid var(--stroke2);border-radius:13px;background:linear-gradient(180deg,rgba(124,137,232,.06),rgba(124,137,232,.02));
-  padding:11px 14px 12px;opacity:0;transform:translateY(10px);transition:opacity .55s ease-out,transform .55s ease-out}
-.swim.show{opacity:1;transform:none}
-.swim-head{display:flex;align-items:baseline;gap:12px;margin-bottom:10px}
-.swim-h{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cash)}
-.swim-sub{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--faint)}
-.swim-edge{margin-left:auto;font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--mint)}
-.swim-track{display:flex;gap:12px;align-items:center;position:relative}
-.swim-track::before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;
-  background:repeating-linear-gradient(to right,rgba(124,137,232,.35) 0 7px,transparent 7px 14px)}
-.scol{flex:1 1 0;min-width:0;z-index:1}
-.scol.pre{flex:0 0 196px;margin-right:18px}
-.pnode{border:1px solid var(--cash);border-radius:9px;background:linear-gradient(180deg,var(--panel),var(--panel2));padding:8px 11px}
-.pnode .pn-t{font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:6px}
-.pnode .pdot{width:7px;height:7px;border-radius:50%;background:var(--cash);flex:none}
-.pnode .pn-s{font-family:var(--mono);font-size:9px;letter-spacing:.05em;color:var(--muted);margin-top:3px}
+/* body */
+article{padding:20px 0 40px}
+article p{font-size:18px;color:#dfe5e8;margin:22px 0}
+article h2{font-size:30px;font-weight:700;letter-spacing:-.015em;margin:56px 0 6px;padding-top:22px;border-top:1px solid var(--stroke)}
+article em{color:var(--ink);font-style:italic}
+article strong{color:var(--ink);font-weight:700}
+article a{color:var(--mint);text-decoration:none;border-bottom:1px solid rgba(52,223,161,.35)}
+article a:hover{border-bottom-color:var(--mint)}
+blockquote{margin:22px 0;padding:2px 0 2px 20px;border-left:2px solid var(--stroke2);color:var(--muted);font-style:italic}
 
-/* ===== floor · runtime panels ===== */
-.floor{flex:1;margin-top:16px;position:relative;min-height:150px}
-.runtime{position:absolute;inset:0;display:flex;align-items:center;opacity:0;transform:translateY(12px);
-  transition:opacity .5s ease-out,transform .5s ease-out;pointer-events:none}
-.runtime.open{opacity:1;transform:none}
-.rt-label{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
-  writing-mode:vertical-rl;transform:rotate(180deg);margin-right:20px;padding:4px 0}
-.rt-card{flex:1;border:1px solid var(--stroke2);border-radius:16px;background:linear-gradient(180deg,var(--panel),var(--panel2));
-  padding:16px 24px;display:flex;align-items:center;gap:30px;height:172px}
-.rt-head{width:216px;flex:none}
-.rt-head .rt-t{font-size:17px;font-weight:600}
-.rt-head .rt-pool{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--muted);margin-top:7px}
-.rt-head .rt-sub{font-size:11.5px;color:var(--faint);margin-top:11px;line-height:1.5}
-.rnode{border:1px solid var(--c);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:9px;
-  background:color-mix(in srgb,var(--c) 12%,transparent);min-width:150px}
-.rnode .rsq{width:13px;height:13px;border-radius:4px;background:var(--c);flex:none}
-.rnode .rn{font-size:13px;font-weight:500}
-.rnode .rn small{display:block;font-family:var(--mono);font-size:8.5px;letter-spacing:.07em;color:var(--muted);margin-top:2px}
-/* screen 2 fan-in */
-.fanin{flex:1;display:flex;align-items:center;justify-content:center}
-.fan-left{display:flex;flex-direction:column;gap:14px}
-.fan-svg{width:88px;height:140px;flex:none}
-.fan-svg path{fill:none;stroke:var(--stroke2);stroke-width:1.6}
-.fan-svg path.hot{stroke:var(--worth)}
-/* screen 3 call & cover */
-.cc{flex:1;display:flex;align-items:center;justify-content:center;gap:0}
-.cc .fan-left{gap:12px}
-.cc-svg{width:64px;height:120px;flex:none}
-.cc-svg path{fill:none;stroke:var(--fin);stroke-width:1.6}
-.cc-arrow{display:flex;flex-direction:column;align-items:center;justify-content:center;width:52px;color:var(--faint);font-size:18px}
-.cc-trade{display:flex;flex-direction:column;align-items:center;gap:8px}
-.cc-pay{font-family:var(--mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--cash);text-align:center}
+/* tables */
+.tbl{width:100%;border-collapse:collapse;margin:26px 0;font-size:15.5px}
+.tbl th{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);
+  text-align:left;padding:0 14px 12px 0;border-bottom:1px solid var(--stroke2);font-weight:500}
+.tbl td{padding:14px 14px 14px 0;border-bottom:1px solid var(--stroke);vertical-align:top;color:#dfe5e8}
+.tbl td:first-child{font-weight:600;color:var(--ink);white-space:nowrap}
+.tbl td .won{font-family:var(--mono);color:var(--mint)}
+.tbl .grp td{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--cash);
+  padding-top:22px;border-bottom:none}
+.tbl .num{font-family:var(--mono);white-space:nowrap;color:var(--ink)}
+.tbl .hi td{color:var(--mint)} .tbl .hi .num{color:var(--mint)}
+.scroll{overflow-x:auto}
 
-/* ===== caption + footer ===== */
-.foot{display:flex;align-items:flex-end;margin-top:12px}
-.captionwrap{max-width:78%}
-.caption-h{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--cash);margin-bottom:7px}
-.caption{font-size:14.5px;color:var(--cash);font-style:italic;line-height:1.4;transition:opacity .4s}
-.caption b{color:#b8c1f5;font-style:normal;font-weight:600}
-.copyright{display:flex;align-items:center;gap:9px;margin-top:10px;padding-top:10px;border-top:1px solid var(--stroke);
-  font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:var(--faint);line-height:1.5}
-.copyright .cmark{height:13px;width:13px;flex:none;color:var(--mint)}
-.copyright b{color:var(--muted);font-weight:600}
+/* embedded flow */
+.flowsec{margin:44px 0}
+.flowsec .fh{font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--mint);margin-bottom:8px}
+.flowsec .fd{color:var(--muted);font-size:16px;margin-bottom:16px}
+.frame{position:relative;width:100%;aspect-ratio:16/9;border:1px solid var(--stroke2);border-radius:14px;overflow:hidden;background:#0b0d0f}
+.frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.frame .open{position:absolute;bottom:12px;right:12px;font-family:var(--mono);font-size:12px;color:var(--mint);
+  text-decoration:none;background:rgba(11,13,15,.8);border:1px solid var(--stroke2);border-radius:8px;padding:6px 10px}
 
-@media (prefers-reduced-motion: reduce){
-  .chip,.emk,.swim,.runtime{transition:none!important}
-}
+/* assets / downloads */
+.assets{max-width:1100px;margin:60px auto 0;padding:0 26px}
+.assets h3{font-family:var(--mono);font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.card{border:1px solid var(--stroke2);border-radius:14px;overflow:hidden;background:linear-gradient(180deg,var(--panel),var(--panel2));text-decoration:none;color:inherit;display:block;transition:border-color .2s}
+.card:hover{border-color:var(--mint)}
+.card img{width:100%;display:block;border-bottom:1px solid var(--stroke)}
+.card .cc{padding:14px 16px}
+.card .ct{font-size:15px;font-weight:600;color:var(--ink)}
+.card .cs{font-family:var(--mono);font-size:12px;color:var(--faint);margin-top:4px}
+
+/* footer */
+footer{max-width:1100px;margin:70px auto 0;padding:26px;border-top:1px solid var(--stroke);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+footer .lock{height:20px;color:#fff;display:block}
+footer .fr{font-family:var(--mono);font-size:13px;color:var(--faint)}
+footer a{color:var(--faint);text-decoration:none}
+footer a:hover{color:var(--mint)}
+.disc{max-width:1100px;margin:0 auto;padding:0 26px 60px}
+.disc p{font-family:var(--mono);font-size:11.5px;line-height:1.6;color:var(--faint)}
 </style>
 </head>
 <body>
-<div class="fit">
-  <div class="stage" id="stage" data-beat="1">
-    <div class="top">
-      <div class="eyebrow">Tokenised repo · <b>how wholesale markets flow</b></div>
-      <div class="wm"><svg class="lockup" viewBox="0 0 614 172" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M158.328 98.0205V142.054H146.037V45.3424H210.871V56.2832H158.328V87.0796H204.523V98.0205H158.328ZM233.916 45.3424V142.054H222.84V45.3424H233.916ZM278.324 71.1411C288.769 71.1411 296.739 74.7881 302.232 82.082C307.094 88.3853 309.525 96.9399 309.525 107.746C309.525 119.812 306.374 128.997 300.07 135.3C294.668 140.793 287.374 143.54 278.189 143.54C267.563 143.54 259.459 139.983 253.876 132.869C249.013 126.656 246.582 118.281 246.582 107.746C246.582 95.4991 249.779 86.0891 256.172 79.5156C261.665 73.9326 269.049 71.1411 278.324 71.1411ZM278.324 81.2715C272.02 81.2715 267.068 83.6578 263.466 88.4304C259.864 93.1129 258.063 99.5513 258.063 107.746C258.063 116.3 260.089 122.829 264.141 127.331C267.653 131.293 272.336 133.274 278.189 133.274C284.402 133.274 289.22 131.023 292.641 126.521C296.153 122.018 297.909 115.76 297.909 107.746C297.909 98.921 295.928 92.1674 291.966 87.4849C288.544 83.3427 283.997 81.2715 278.324 81.2715ZM387.718 142.054H375.157L360.974 87.4849L347.602 142.054H335.175L315.05 72.6269H327.206L341.524 126.656L354.761 72.6269H368.268L381.91 126.656L395.688 72.6269H408.114L387.718 142.054ZM417.027 70.4658H435.667V84.1081C438.008 74.0227 444.672 68.98 455.658 68.98C457.368 68.98 458.584 68.98 459.304 68.98L459.44 87.3498C457.188 86.8995 454.847 86.6744 452.416 86.6744C446.293 86.6744 442.06 87.8 439.719 90.0512C437.018 92.5726 435.667 97.12 435.667 103.694V142.054H417.027V70.4658ZM511.15 70.4658H530.195L500.749 155.021C498.678 161.054 495.932 165.196 492.51 167.447C489.088 169.789 484 170.959 477.247 170.959C471.034 170.959 466.711 170.149 464.28 168.528L467.116 155.966C470.358 156.777 473.06 157.182 475.221 157.182C478.372 157.182 481.074 156.101 483.325 153.94C485.576 151.869 486.702 149.393 486.702 146.511V145.026L460.093 70.4658H480.489L496.427 122.604L511.15 70.4658ZM603.661 45.3424V142.054H585.021V134.085C580.698 140.388 574.17 143.54 565.435 143.54C555.98 143.54 548.371 139.578 542.608 131.653C537.655 124.9 535.179 116.48 535.179 106.395C535.179 94.4186 538.331 84.9635 544.634 78.0298C550.127 71.9966 557.016 68.98 565.3 68.98C574.035 68.98 580.608 72.3118 585.021 78.9753V45.3424H603.661ZM569.487 84.2431C564.805 84.2431 561.023 86.2692 558.141 90.3214C555.26 94.3735 553.819 99.6864 553.819 106.26C553.819 112.743 555.215 118.011 558.006 122.063C560.888 126.025 564.715 128.006 569.487 128.006C574.26 128.006 578.042 126.025 580.833 122.063C583.715 118.101 585.156 112.833 585.156 106.26C585.156 99.5963 583.715 94.2835 580.833 90.3214C577.952 86.2692 574.17 84.2431 569.487 84.2431Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M124.369 72.7175C127.882 66.3081 127.487 58.4937 123.348 52.517C115.189 40.7351 97.3932 41.7415 90.4693 54.3765L81.3733 70.9751C79.5239 74.3499 74.7705 74.6188 72.5913 71.4717L56.8824 48.7864C53.9886 44.6074 48.9713 42.4266 43.9123 43.1489L24.278 45.9521C10.0149 47.9884 2.81212 64.2927 10.9707 76.0747C15.1094 82.0514 22.2852 85.1704 29.5205 84.1374L59.0339 79.9238C62.6321 79.4101 66.2008 80.9612 68.259 83.9335C70.3172 86.9058 70.5137 90.792 68.767 93.9795L54.4399 120.124C50.9276 126.533 51.3227 134.348 55.4614 140.324C63.62 152.106 81.416 151.1 88.34 138.465L124.369 72.7175Z" fill="currentColor"/></svg></div>
-    </div>
-    <div class="ticks" id="ticks"></div>
 
-    <div class="laylabel" style="color:var(--mint)">Repo · units on steps</div>
-    <div class="band" id="band"></div>
+<nav class="nav">
+  <a href="/" aria-label="Flowryd"><svg class="lock" viewBox="0 0 614 172" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M158.328 98.0205V142.054H146.037V45.3424H210.871V56.2832H158.328V87.0796H204.523V98.0205H158.328ZM233.916 45.3424V142.054H222.84V45.3424H233.916ZM278.324 71.1411C288.769 71.1411 296.739 74.7881 302.232 82.082C307.094 88.3853 309.525 96.9399 309.525 107.746C309.525 119.812 306.374 128.997 300.07 135.3C294.668 140.793 287.374 143.54 278.189 143.54C267.563 143.54 259.459 139.983 253.876 132.869C249.013 126.656 246.582 118.281 246.582 107.746C246.582 95.4991 249.779 86.0891 256.172 79.5156C261.665 73.9326 269.049 71.1411 278.324 71.1411ZM278.324 81.2715C272.02 81.2715 267.068 83.6578 263.466 88.4304C259.864 93.1129 258.063 99.5513 258.063 107.746C258.063 116.3 260.089 122.829 264.141 127.331C267.653 131.293 272.336 133.274 278.189 133.274C284.402 133.274 289.22 131.023 292.641 126.521C296.153 122.018 297.909 115.76 297.909 107.746C297.909 98.921 295.928 92.1674 291.966 87.4849C288.544 83.3427 283.997 81.2715 278.324 81.2715ZM387.718 142.054H375.157L360.974 87.4849L347.602 142.054H335.175L315.05 72.6269H327.206L341.524 126.656L354.761 72.6269H368.268L381.91 126.656L395.688 72.6269H408.114L387.718 142.054ZM417.027 70.4658H435.667V84.1081C438.008 74.0227 444.672 68.98 455.658 68.98C457.368 68.98 458.584 68.98 459.304 68.98L459.44 87.3498C457.188 86.8995 454.847 86.6744 452.416 86.6744C446.293 86.6744 442.06 87.8 439.719 90.0512C437.018 92.5726 435.667 97.12 435.667 103.694V142.054H417.027V70.4658ZM511.15 70.4658H530.195L500.749 155.021C498.678 161.054 495.932 165.196 492.51 167.447C489.088 169.789 484 170.959 477.247 170.959C471.034 170.959 466.711 170.149 464.28 168.528L467.116 155.966C470.358 156.777 473.06 157.182 475.221 157.182C478.372 157.182 481.074 156.101 483.325 153.94C485.576 151.869 486.702 149.393 486.702 146.511V145.026L460.093 70.4658H480.489L496.427 122.604L511.15 70.4658ZM603.661 45.3424V142.054H585.021V134.085C580.698 140.388 574.17 143.54 565.435 143.54C555.98 143.54 548.371 139.578 542.608 131.653C537.655 124.9 535.179 116.48 535.179 106.395C535.179 94.4186 538.331 84.9635 544.634 78.0298C550.127 71.9966 557.016 68.98 565.3 68.98C574.035 68.98 580.608 72.3118 585.021 78.9753V45.3424H603.661ZM569.487 84.2431C564.805 84.2431 561.023 86.2692 558.141 90.3214C555.26 94.3735 553.819 99.6864 553.819 106.26C553.819 112.743 555.215 118.011 558.006 122.063C560.888 126.025 564.715 128.006 569.487 128.006C574.26 128.006 578.042 126.025 580.833 122.063C583.715 118.101 585.156 112.833 585.156 106.26C585.156 99.5963 583.715 94.2835 580.833 90.3214C577.952 86.2692 574.17 84.2431 569.487 84.2431Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M124.369 72.7175C127.882 66.3081 127.487 58.4937 123.348 52.517C115.189 40.7351 97.3932 41.7415 90.4693 54.3765L81.3733 70.9751C79.5239 74.3499 74.7705 74.6188 72.5913 71.4717L56.8824 48.7864C53.9886 44.6074 48.9713 42.4266 43.9123 43.1489L24.278 45.9521C10.0149 47.9884 2.81212 64.2927 10.9707 76.0747C15.1094 82.0514 22.2852 85.1704 29.5205 84.1374L59.0339 79.9238C62.6321 79.4101 66.2008 80.9612 68.259 83.9335C70.3172 86.9058 70.5137 90.792 68.767 93.9795L54.4399 120.124C50.9276 126.533 51.3227 134.348 55.4614 140.324C63.7169 154.052 81.5359 153.612 88.858 141.203L124.369 72.7175Z" fill="currentColor"/></svg></a>
+  <a class="cta" href="#flow">See the flow &rarr;</a>
+</nav>
 
-    <!-- PAYMENT swimlane -->
-    <div class="swim" id="swim">
-      <div class="swim-head"><span class="swim-h">Payment · PvP</span><span class="swim-sub">stablecoin / tokenised cash · atomic</span><span class="swim-edge">⇄ fiat only at the edges · On/off ramp</span></div>
-      <div class="swim-track" id="swimtrack"></div>
-    </div>
+<header class="hero wrap">
+  <div class="eyebrow">Wholesale markets · <b>tokenisation</b></div>
+  <h1>A market is a simple equation.</h1>
+  <p class="sub">Tokenisation will not change what makes a market. It will only change <em>where</em> the market is made — and whether decentralised finance can deliver on its promise. That is being decided now.</p>
+  <div class="byline">Liz Towler · Founder &amp; CEO, Flowryd</div>
+</header>
 
-    <div class="floor">
-      <!-- SCREEN 2 · the fan -->
-      <div class="runtime" id="rt2">
-        <div class="rt-label" style="color:var(--worth)">Runtime · inside a stack</div>
-        <div class="rt-card">
-          <div class="rt-head"><div class="rt-t">Value &amp; Haircut</div><div class="rt-pool">app stack · step 01</div>
-            <div class="rt-sub">Pricing and Rating run independently; the Collateral Agent consumes both — a fan-in, not a queue.</div></div>
-          <div class="fanin">
-            <div class="fan-left">
-              <div class="rnode" style="--c:var(--worth)"><span class="rsq"></span><span class="rn">Oracle / Pricing<small>DATA</small></span></div>
-              <div class="rnode" style="--c:var(--worth)"><span class="rsq"></span><span class="rn">Rating<small>DATA</small></span></div>
-            </div>
-            <svg class="fan-svg" viewBox="0 0 88 140" preserveAspectRatio="none">
-              <path class="hot" d="M2 28 C 46 28, 42 70, 86 70"/><path d="M2 112 C 46 112, 42 70, 86 70"/>
-            </svg>
-            <div class="rnode" style="--c:var(--fin)"><span class="rsq"></span><span class="rn">Collateral Agent<small>COLLATERAL</small></span></div>
-          </div>
-        </div>
-      </div>
+<article class="wrap">
 
-      <!-- SCREEN 3 · Call & Cover -->
-      <div class="runtime" id="rt3">
-        <div class="rt-label" style="color:var(--fin)">Runtime · inside a stack</div>
-        <div class="rt-card">
-          <div class="rt-head"><div class="rt-t">Call &amp; Cover</div><div class="rt-pool">app stack · step 05 · intraday ↺</div>
-            <div class="rt-sub">Valuation and FX feed the margin call; the venue covers it. Money settles on the Payment lane.</div></div>
-          <div class="cc">
-            <div class="fan-left">
-              <div class="rnode" style="--c:var(--worth)"><span class="rsq"></span><span class="rn">Valuation<small>MARK-TO-MARKET</small></span></div>
-              <div class="rnode" style="--c:var(--cash)"><span class="rsq"></span><span class="rn">FX<small>RATE DIFFERENTIAL</small></span></div>
-            </div>
-            <svg class="cc-svg" viewBox="0 0 64 120" preserveAspectRatio="none">
-              <path d="M2 22 C 40 22, 36 60, 62 60"/><path d="M2 98 C 40 98, 36 60, 62 60"/>
-            </svg>
-            <div class="rnode" style="--c:var(--fin)"><span class="rsq"></span><span class="rn">Margin call<small>COLLATERAL AGENT</small></span></div>
-            <div class="cc-arrow">→</div>
-            <div class="cc-trade">
-              <div class="rnode" style="--c:var(--exec)"><span class="rsq"></span><span class="rn">Trade<small>TRADING VENUE · LONG/SHORT</small></span></div>
-              <div class="cc-pay">↓ triggers Payment · variation margin</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+<p>Set aside the complexity. Buyers and sellers make a trade. Trust and liquidity bring them back. A place to meet turns them into a market. That is it — it is the market. Everything else — the asset, the token, the technology, the currency — is detail. Important to get right, but it can't exist in isolation. To coin a real estate phrase, it's market, market, market.</p>
 
-    <div class="foot">
-      <div class="captionwrap">
-        <div class="caption-h">The kitchen</div>
-        <div class="caption" id="caption"></div>
-      </div>
-    </div>
-    <div class="copyright">
-      <svg class="cmark" viewBox="0 0 159 161" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M126.959 76.6343C130.674 70.3398 130.527 62.5168 126.58 56.4116C118.8 44.3762 100.981 44.8165 93.6594 57.2249L84.0404 73.526C82.0846 76.8403 77.325 76.9579 75.2469 73.7432L60.2672 50.5699C57.5077 46.3011 52.5622 43.9619 47.4828 44.523L27.7693 46.7006C13.4487 48.2825 5.73127 64.3496 13.5112 76.385C17.4578 82.4902 24.5308 85.8357 31.7953 85.0333L61.4278 81.76C65.0405 81.3609 68.558 83.0247 70.5207 86.0609C72.4834 89.0972 72.5563 92.9876 70.7091 96.118L55.5582 121.794C51.8439 128.088 51.9904 135.911 55.937 142.016C63.7169 154.052 81.5359 153.612 88.858 141.203L126.959 76.6343Z" fill="currentColor"/></svg>
-      <span>© 2026 <b>Flowryd</b> · flowryd.xyz · For illustrative and inspiration purposes only — adaptable frameworks for builders of onchain markets. No financial, legal, or smart-contract audit advice implied.</span>
-    </div>
+<p>This is worth remembering right now, because the entire tokenisation debate has fixed on the details. The token. The stablecoin. The ledger. The settlement money. The dollar's dominance, the safety of central bank money, the elegance of atomic settlement: all real, all necessary — and none of them, on their own, a market.</p>
+
+<p>A market is made by the venue: the place where trust and liquidity meet. The UK Government's own Wholesale Financial Markets Digital Strategy has it right from the opening line — wholesale markets, it says, rely on a complex ecosystem, <em>"including the venues through which assets are issued and traded."</em> The venue is named first, and rightly so. From there, like most of us writing on tokenisation, it turns to the asset and the technology — understandably, those are the concrete parts. This piece simply picks the venue back up.</p>
+
+<p>The asset is what is traded. The technology is how it moves. The venue is the market. And the currency it is priced in — the thing the current debate treats as decisive — is the most visible part, and the least.</p>
+
+<h2>The Champagne fairs already solved it</h2>
+
+<p>London has been the world's largest foreign exchange centre for the better part of two centuries, and at no point was that because of sterling. It has won the same argument, the same way, over and over.</p>
+
+<p>The medieval Champagne fairs, then Bruges and Antwerp, established the model: a recurring venue with a fixed settlement period, where exposures were netted at the close. In 1571, Gresham copied Antwerp's bourse onto Cornhill as the Royal Exchange — a place to meet, with rules. The market followed the venue, not the merchandise. In the nineteenth century, the world cleared its trade credit through "bills on London" — not because Britain dominated trade, but because a bill accepted in London could be trusted and enforced.</p>
+
+<p>Then the episode that ought to end the argument. In the late 1950s, a sterling crisis led the UK to restrict non-resident lending in its own currency. Rather than lose its role financing world trade, London switched to dollars — intermediating offshore dollar deposits under English law, outside American regulation. The eurodollar market was born, and modern London with it. The asset was American. The venue was British. London won the century's greatest currency market with someone else's currency. A century on, an entire market grew the same way — not from a statute or a standard policy, but from a room. Edward Lloyd's coffee house drew the shipowners, merchants and underwriters who came for the shipping news, and the market for insuring the voyages formed around the table. The venue made the market; the policy came after.</p>
+
+<p><strong>The lesson is eight hundred years old and has never once been contradicted: win the venue, and the asset comes to you.</strong></p>
+
+<div class="scroll">
+<table class="tbl">
+  <thead><tr><th>Era</th><th>What London won</th><th>How</th></tr></thead>
+  <tbody>
+    <tr><td>Champagne fairs → Bruges → Antwerp <span style="color:var(--faint);font-weight:400">12th–16th c.</span></td><td><span class="won">the model</span></td><td>Recurring venue + fixed settlement period; netted at the close</td></tr>
+    <tr><td>Royal Exchange <span style="color:var(--faint);font-weight:400">1571</span></td><td><span class="won">the venue</span></td><td>Gresham copied Antwerp's bourse onto Cornhill</td></tr>
+    <tr><td>Lloyd's coffee house <span style="color:var(--faint);font-weight:400">c.1688</span></td><td><span class="won">the insurance market</span></td><td>The market formed around the room, not the policy</td></tr>
+    <tr><td>Bills on London <span style="color:var(--faint);font-weight:400">1815–1914</span></td><td><span class="won">the correspondent network</span></td><td>Acceptance-house credit and legal certainty, not trade share</td></tr>
+    <tr><td>Eurodollar market <span style="color:var(--faint);font-weight:400">late 1950s</span></td><td><span class="won">someone else's currency</span></td><td>Offshore dollars under English law, outside US regulation</td></tr>
+    <tr><td>Screen era <span style="color:var(--faint);font-weight:400">1971–1986</span></td><td><span class="won">the price surface</span></td><td>Reuters Monitor (1973); Monitor Dealing (1981)</td></tr>
+    <tr><td>Today <span style="color:var(--faint);font-weight:400">2025</span></td><td><span class="won">both markets</span></td><td>37.8% FX, 49.6% OTC rates; English-law rulebooks; tokenised assets now property</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2>The cornerstones the venue is built on</h2>
+
+<p>What makes London the venue is not mysterious, and it is not sterling. There are four things, and every one of them is a property of the <em>place</em>, not the <em>unit</em>.</p>
+
+<p><strong>Continuity.</strong> English commercial law runs unbroken for centuries; a contract enforceable today is enforceable the same way tomorrow. That predictability is why the world documents its wholesale trades under English law — and, crucially, it is a continuity <em>through</em> reinvention, not despite it. The bourse, the bill, the eurodollar, the screen: London has absorbed every wave of innovation and changed for the better without breaking the trust. Tokenisation is simply the next wave it has always known how to take.</p>
+
+<p><strong>Legal certainty.</strong> English law governs the rulebook the wholesale world already runs on — the Global Master Repurchase Agreement for repo, and the ISDA Master Agreement for derivatives. And in December 2025, the Property (Digital Assets etc) Act made tokenised assets property under English law: ownable, pledgeable, enforceable. The trade <em>and</em> the asset are certain.</p>
+
+<p><strong>Concentration.</strong> Liquidity begets liquidity. The banks, the funds, the corporates, the infrastructure and the talent are already clustered in one venue — which is why London accounts for 37.8% of global foreign exchange and 49.6% of over-the-counter interest-rate derivatives, the largest centre in the world for both. Not because of sterling. Because everyone is already in the room.</p>
+
+<p><strong>Convenience.</strong> London sits between the Asian close and the US open — the deepest liquidity window of the global day — and there, the trade settles, funds and documents in one place, one law, one language. It is simply easy to do here. That ease is the flywheel that keeps buyers and sellers coming back.</p>
+
+<p>Beneath all four sits stability: predictable rule of law, an independent central bank, institutions that endure. Together they produce the two things the definition demands — trust and liquidity — and they are exactly what a tokenised market will still need.</p>
+
+<h2>A necessary condition, mistaken for a sufficient one</h2>
+
+<p>Here is where the current debate goes wrong, thoughtfully and with the best intentions.</p>
+
+<p>The most serious version of the tokenisation argument holds that what makes a market real is the <em>settlement asset</em> — that keeping the cash leg in central bank money is what preserves finality and legal certainty, and separates a serious build from a pilot. Projects like Banque de France and Euroclear's Pythagore, settling tokenised commercial paper in wholesale central bank money, are held up as the proof.</p>
+
+<p>And they are right — as far as they go. Central bank money settlement is a <em>necessary</em> condition for a safe wholesale market. But it is not <em>sufficient</em> to create one. You can settle in the safest money on earth and still have no market, because liquidity, price formation and the rules of participation are properties of the venue, not of what the cash leg is denominated in. Pythagore proves that tokenised paper can be settled cleanly. It does not prove that a market formed. Settlement is the plumbing. The venue is the market.</p>
+
+<p>To argue from the settlement asset is to identify a necessary condition and mistake it for the sufficient one. That is the gap in the debate, and it is where this piece begins.</p>
+
+<h2>The direction of travel</h2>
+
+<div class="scroll">
+<table class="tbl">
+  <thead><tr><th style="width:60%"></th><th>Where it stands</th></tr></thead>
+  <tbody>
+    <tr class="grp"><td colspan="2">London leads the wholesale flows</td></tr>
+    <tr><td>UK share of global FX</td><td class="num">37.8% · $4,745bn/day</td></tr>
+    <tr><td>UK share of global OTC interest-rate derivatives</td><td class="num">49.6% · $4,320bn/day</td></tr>
+    <tr><td>FX swaps — most-traded instrument</td><td class="num">$4tn/day (+5% vs 2022)</td></tr>
+    <tr class="grp"><td colspan="2">The tokenised market today</td></tr>
+    <tr><td>Total tokenised value</td><td class="num">~$330bn</td></tr>
+    <tr><td>Tokenised assets excl. stablecoins</td><td class="num">~$32bn (~$15bn UST)</td></tr>
+    <tr><td>Currency of the tokenised cash leg</td><td class="num">~99% USD · GBP &lt;1%</td></tr>
+    <tr><td>Broadridge tokenised repo (DLR)</td><td class="num">~$365bn/day</td></tr>
+    <tr class="grp"><td colspan="2">Where it is forming</td></tr>
+    <tr><td>Live tokenised issuance &amp; repo venues</td><td class="num">CH · HK · SG · US</td></tr>
+    <tr><td>First live onchain US Treasury repo (DTCC), Jul 2026</td><td class="num">US infrastructure</td></tr>
+    <tr class="grp"><td colspan="2">The UK's position</td></tr>
+    <tr><td>UK sovereign digital issuance (DIGIT pilot)</td><td class="num">£0 · first sale Q1 2027</td></tr>
+    <tr><td>Systemic stablecoin regime — go-live</td><td class="num">EU 2024 · US 2025 · UK 2027</td></tr>
+    <tr class="hi"><td>Tokenisation upside to the UK by 2035 — if the UK leads</td><td class="num">£33bn/yr + £14bn tax</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>None of this is a problem in today's data. London's share is stable; its turnover is growing. That is precisely why it is easy to miss.</p>
+
+<p>But the venue for the <em>next</em> market — where assets are issued, funded and settled onchain — is already forming, and it is forming offshore. The live, at-scale tokenised issuance and repo venues are in Switzerland, Hong Kong, Singapore and the United States; the first live onchain US Treasury repo through a major post-trade utility was executed in July 2026, on American infrastructure. The UK's own sovereign digital instrument is still a pilot.</p>
+
+<p>This matters more than it looks, because of one fact the asset-first debate obscures: <strong>repo and foreign exchange are the same flow.</strong> An FX swap is a repo in two currencies — a spot leg and a reversing forward, each funded at its own repo rate. FX swaps are the single most-traded instrument in the market, at $4 trillion a day. So the wholesale funding layer, the FX book and the repo trial are one continuous, cross-border, always-on flow. When that flow moves onchain, the venue moves with it — by definition, because the venue has only ever been where the flow clears.</p>
+
+<div class="flowsec" id="flow">
+  <div class="fh">See how onchain markets are forming — repo and FX, one always-on flow</div>
+  <div class="fd">Round-the-clock trading needs round-the-clock funding — new collateral, new ways to pay, and the FX to cover the risk. Move one onchain and you move the other.</div>
+  <div class="frame">
+    <iframe src="assets/flows/" title="How wholesale markets flow — tokenised repo" loading="lazy"></iframe>
+    <a class="open" href="assets/flows/" target="_blank" rel="noopener">Open full &nbsp;&rarr;</a>
   </div>
 </div>
 
-<script>
-const CAT={mint:'--mint',exec:'--exec',fin:'--fin',cash:'--cash',worth:'--worth',watch:'--watch'};
-const FN={
-  idp:{c:'watch'}, comp:{c:'watch'}, wallet:{c:'cash'},
-  oracle:{c:'worth'}, collat:{c:'fin'}, rating:{c:'worth'},
-  fx:{c:'cash'}, registry:{c:'exec'}, clearing:{c:'exec'}
-};
-const STACKS={
-  onboarding:{name:'Onboarding',cat:'watch',fns:['idp','comp','wallet']},
-  value:{name:'Value & Haircut',cat:'worth',fns:['oracle','collat','rating']},
-  call:{name:'Call & Cover',cat:'fin',fns:['oracle','fx','collat']},
-  book:{name:'Book & Clear',cat:'exec',fns:['registry','clearing']},
-  onofframp:{name:'On / off ramp',cat:'cash',fns:['fx','wallet']}
-};
-const COLS=[
-  {num:'PRE',name:'Pre-deal',pre:true,stacks:['onboarding','onofframp']},
-  {num:'01',name:'Collateral pledge',stacks:['value']},
-  {num:'02',name:'Buyer requests collateral',stacks:[],emk:'no stack · deliberate'},
-  {num:'03',name:'Agreement executed',stacks:['book']},
-  {num:'04',name:'Lock',stacks:[],emk:'atomic DvP',emkpay:true,pay:{t:'DvP · atomic',s:'with the agreement'}},
-  {num:'05',name:'Margin',stacks:['call','value'],loop:true,pay:{t:'Variation margin',s:'each loop'}},
-  {num:'06',name:'Return',stacks:['book','onofframp'],pay:{t:'Return PvP',s:'or Closeout'}}
-];
+<p>So the watch-points write themselves. Whose law will confer finality on the tokenised leg? The currency of tokenised settlement is being fixed right now, at roughly ninety-nine per cent dollar and well under one per cent sterling. The UK's systemic regime arrives in 2027, behind both the EU and the US. And the largest wholesale market Britain leads — foreign exchange — has no issuer, no sponsor, and no workstream that names it, because it is a flow and not an instrument, and policy is built to regulate instruments.</p>
 
-const band=document.getElementById('band');
-const swimtrack=document.getElementById('swimtrack');
-let order=0;
-COLS.forEach(col=>{
-  const c=document.createElement('div');
-  c.className='col'+(col.pre?' pre':'');
-  let inner='';
-  if(col.stacks.length){ col.stacks.forEach(s=>inner+=chipHTML(s,++order)); }
-  else { inner=`<div class="emk${col.emkpay?' pay':''}" data-emk><span class="dash">—</span><span class="etxt">${col.emk||''}</span></div>`; }
-  const tag=col.pre?`<span class="predeal-tag">before step 01</span>`:'';
-  const loop=col.loop?`<span class="loopbadge"><svg viewBox="0 0 24 24"><path d="M17 2l4 4-4 4"/><path d="M3 12a7 7 0 017-7h11"/><path d="M7 22l-4-4 4-4"/><path d="M21 12a7 7 0 01-7 7H3"/></svg>intraday</span>`:'';
-  c.innerHTML=`<div class="chead"><div class="cnum">${col.num}</div><div class="cname">${col.name}</div></div><div class="cell">${tag}${loop}${inner}</div>`;
-  band.appendChild(c);
-  // swimlane column (aligned)
-  const s=document.createElement('div');
-  s.className='scol'+(col.pre?' pre':'');
-  if(col.pay){ s.innerHTML=`<div class="pnode" data-pay><div class="pn-t"><span class="pdot"></span>${col.pay.t}</div><div class="pn-s">${col.pay.s}</div></div>`; }
-  swimtrack.appendChild(s);
-});
-function chipHTML(sid,ord){
-  const s=STACKS[sid];
-  const icons=s.fns.map(f=>`<span class="ftile" style="--c:var(${CAT[FN[f].c]})"></span>`).join('');
-  return `<div class="chip" data-chip style="--acc:var(${CAT[s.cat]});transition-delay:${(ord-1)*80}ms">
-    <div class="icons">${icons}</div><div class="ctitle">${s.name}</div>
-    <div class="dotrow"><span class="adot"></span><span class="alabel">app stack</span></div></div>`;
-}
+<h2>Buyers, sellers, and a place to trade</h2>
 
-const ticks=document.getElementById('ticks');
-for(let i=1;i<=6;i++){const t=document.createElement('span');t.className='tick';t.dataset.t=i;ticks.appendChild(t);}
+<p>From where I sit, much of the move to open markets is being done in old ways — behind closed doors, by invitation, and with investment hurdles that lock out innovators. Coordination is hard. But you don't reach open, shared, composable infrastructure by owning the rail, the network and the structural advantage — that is not the right tool for this era. What got us here will not get us there.</p>
 
-const CAPTIONS={
-  1:'An empty layout — the steps, in order.',
-  2:'Prefab units land on their steps.',
-  3:'One money rail underneath — <b>Payment</b>, atomic, in stablecoin.',
-  4:'Inside a unit: pricing and rating feed the agent — a fan-in.',
-  5:'Under a margin call: valuation and FX feed the call; the venue covers it.',
-  6:'The flow, whole — units on steps, money on the rail.'
-};
-const stage=document.getElementById('stage');
-const caption=document.getElementById('caption');
-const chips=[...document.querySelectorAll('[data-chip]')];
-const emks=[...document.querySelectorAll('[data-emk]')];
-const swim=document.getElementById('swim');
-const rt2=document.getElementById('rt2');
-const rt3=document.getElementById('rt3');
-const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const DUR={1:2800,2:4200,3:3800,4:4200,5:4600,6:3600};
+<p>None of this is a warning against the builders, assets or technology. The venue is buyers, sellers, and a place to meet — the equation the Champagne fairs solved, that Lloyd's coffee house solved. We already know the patterns. What we need is a new way to make today's workflows visible, and a space to co-design the build for digital markets.</p>
 
-function apply(n){
-  stage.dataset.beat=n;
-  caption.innerHTML=CAPTIONS[n];
-  chips.forEach(ch=>ch.classList.toggle('show', n>=2));
-  emks.forEach(e=>e.classList.toggle('show', n>=2));
-  swim.classList.toggle('show', n>=3);
-  rt2.classList.toggle('open', n===4);
-  rt3.classList.toggle('open', n===5);
-  ticks.querySelectorAll('.tick').forEach(t=>t.classList.toggle('on', +t.dataset.t<=n));
-}
+<p>That work is open to anyone: take what markets already do — issue, fund, settle, margin, return — and rebuild it, pattern by pattern, in the open. The rails will keep changing. The equation will not. London, of all places, knows how to build the place where everyone comes to meet. It has all of the principles required for a fair and transparent open market — but we must move principles into action.</p>
 
-if(reduce){
-  apply(6);
-  chips.forEach(c=>c.classList.add('show')); emks.forEach(e=>e.classList.add('show')); swim.classList.add('show');
-  ticks.querySelectorAll('.tick').forEach(t=>t.classList.add('on'));
-}else{
-  let beat=0,timer=null;
-  function next(){
-    beat=beat>=6?1:beat+1;
-    if(beat===1){stage.style.transition='opacity .5s';stage.style.opacity='0';setTimeout(()=>{apply(1);stage.style.opacity='1';},480);}
-    else{apply(beat);}
-    timer=setTimeout(next, DUR[beat]||3600);
-  }
-  apply(1); timer=setTimeout(next, DUR[1]);
-  window.__stop=()=>{clearTimeout(timer);stage.style.opacity='1';};
-}
-function fit(){const s=Math.min(window.innerWidth/1440, window.innerHeight/810);stage.style.transform='scale('+s+')';}
-window.addEventListener('resize',fit); fit();
-window.__apply=apply;
-</script>
+<p><strong>The venue is there to be won. But as markets move to 24×7 trading, there is no time to wait.</strong></p>
+
+</article>
+
+<section class="assets">
+  <h3>Take it, adapt it, build on it</h3>
+  <div class="grid">
+    <a class="card" href="assets/flows/" target="_blank" rel="noopener">
+      <div class="cc"><div class="ct">How markets flow — tokenised repo</div><div class="cs">interactive · repo &amp; FX &rarr;</div></div>
+    </a>
+    <a class="card" href="assets/carousel.pdf" target="_blank" rel="noopener">
+      <div class="cc"><div class="ct">The simple equation — carousel</div><div class="cs">PDF · 8 slides</div></div>
+    </a>
+    <a class="card" href="assets/lineage-banner.png" target="_blank" rel="noopener">
+      <img src="assets/lineage-banner.png" alt="800 years, one lesson: win the venue, and the asset comes to you">
+      <div class="cc"><div class="ct">Win the venue, and the asset comes to you</div><div class="cs">image · 1200×627</div></div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <svg class="lock" viewBox="0 0 614 172" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M158.328 98.0205V142.054H146.037V45.3424H210.871V56.2832H158.328V87.0796H204.523V98.0205H158.328ZM233.916 45.3424V142.054H222.84V45.3424H233.916ZM278.324 71.1411C288.769 71.1411 296.739 74.7881 302.232 82.082C307.094 88.3853 309.525 96.9399 309.525 107.746C309.525 119.812 306.374 128.997 300.07 135.3C294.668 140.793 287.374 143.54 278.189 143.54C267.563 143.54 259.459 139.983 253.876 132.869C249.013 126.656 246.582 118.281 246.582 107.746C246.582 95.4991 249.779 86.0891 256.172 79.5156C261.665 73.9326 269.049 71.1411 278.324 71.1411ZM278.324 81.2715C272.02 81.2715 267.068 83.6578 263.466 88.4304C259.864 93.1129 258.063 99.5513 258.063 107.746C258.063 116.3 260.089 122.829 264.141 127.331C267.653 131.293 272.336 133.274 278.189 133.274C284.402 133.274 289.22 131.023 292.641 126.521C296.153 122.018 297.909 115.76 297.909 107.746C297.909 98.921 295.928 92.1674 291.966 87.4849C288.544 83.3427 283.997 81.2715 278.324 81.2715ZM387.718 142.054H375.157L360.974 87.4849L347.602 142.054H335.175L315.05 72.6269H327.206L341.524 126.656L354.761 72.6269H368.268L381.91 126.656L395.688 72.6269H408.114L387.718 142.054ZM417.027 70.4658H435.667V84.1081C438.008 74.0227 444.672 68.98 455.658 68.98C457.368 68.98 458.584 68.98 459.304 68.98L459.44 87.3498C457.188 86.8995 454.847 86.6744 452.416 86.6744C446.293 86.6744 442.06 87.8 439.719 90.0512C437.018 92.5726 435.667 97.12 435.667 103.694V142.054H417.027V70.4658ZM511.15 70.4658H530.195L500.749 155.021C498.678 161.054 495.932 165.196 492.51 167.447C489.088 169.789 484 170.959 477.247 170.959C471.034 170.959 466.711 170.149 464.28 168.528L467.116 155.966C470.358 156.777 473.06 157.182 475.221 157.182C478.372 157.182 481.074 156.101 483.325 153.94C485.576 151.869 486.702 149.393 486.702 146.511V145.026L460.093 70.4658H480.489L496.427 122.604L511.15 70.4658ZM603.661 45.3424V142.054H585.021V134.085C580.698 140.388 574.17 143.54 565.435 143.54C555.98 143.54 548.371 139.578 542.608 131.653C537.655 124.9 535.179 116.48 535.179 106.395C535.179 94.4186 538.331 84.9635 544.634 78.0298C550.127 71.9966 557.016 68.98 565.3 68.98C574.035 68.98 580.608 72.3118 585.021 78.9753V45.3424H603.661ZM569.487 84.2431C564.805 84.2431 561.023 86.2692 558.141 90.3214C555.26 94.3735 553.819 99.6864 553.819 106.26C553.819 112.743 555.215 118.011 558.006 122.063C560.888 126.025 564.715 128.006 569.487 128.006C574.26 128.006 578.042 126.025 580.833 122.063C583.715 118.101 585.156 112.833 585.156 106.26C585.156 99.5963 583.715 94.2835 580.833 90.3214C577.952 86.2692 574.17 84.2431 569.487 84.2431Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M124.369 72.7175C127.882 66.3081 127.487 58.4937 123.348 52.517C115.189 40.7351 97.3932 41.7415 90.4693 54.3765L81.3733 70.9751C79.5239 74.3499 74.7705 74.6188 72.5913 71.4717L56.8824 48.7864C53.9886 44.6074 48.9713 42.4266 43.9123 43.1489L24.278 45.9521C10.0149 47.9884 2.81212 64.2927 10.9707 76.0747C15.1094 82.0514 22.2852 85.1704 29.5205 84.1374L59.0339 79.9238C62.6321 79.4101 66.2008 80.9612 68.259 83.9335C70.3172 86.9058 70.5137 90.792 68.767 93.9795L54.4399 120.124C50.9276 126.533 51.3227 134.348 55.4614 140.324C63.7169 154.052 81.5359 153.612 88.858 141.203L124.369 72.7175Z" fill="currentColor"/></svg>
+  <div class="fr"><a href="https://flowryd.xyz">flowryd.xyz</a></div>
+</footer>
+
+<div class="disc">
+  <p>Sources: UK Wholesale Digital Markets Champion First Report (2026) · BIS Triennial Survey (2025) · Bank of England FX &amp; OTC derivatives turnover survey (2025) · ICMA GMRA and Digital Assets Annex (2024) · Law Commission, Property (Digital Assets etc) Act 2025.</p>
+  <p style="margin-top:10px">For illustrative and inspiration purposes only — adaptable frameworks for builders of onchain markets. No financial, legal, or smart-contract audit advice implied.</p>
+</div>
+
 </body>
 </html>
